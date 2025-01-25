@@ -16,7 +16,7 @@ export function Header() {
   const [activeItem, setActiveItem] = useState("Home")
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-950 bg-opacity-80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md">
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Cube className="h-8 w-8 text-accent" />

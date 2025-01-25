@@ -21,7 +21,7 @@ export function FileUpload() {
   })
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-900">
+    <section className="min-h-screen flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

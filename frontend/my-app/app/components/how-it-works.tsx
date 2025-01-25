@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="min-h-screen flex items-center justify-center bg-gray-900">
+    <section id="how-it-works" className="min-h-screen flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}

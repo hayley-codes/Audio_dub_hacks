@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 
 export function Business() {
   return (
-    <section id="business" className="min-h-screen flex items-center justify-center bg-gray-900">
+    <section id="business" className="min-h-screen flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
