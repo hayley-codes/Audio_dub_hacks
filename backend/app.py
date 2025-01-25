@@ -3,7 +3,7 @@ import openai
 from deep_translator import GoogleTranslator
 from gtts import gTTS
 import ffmpeg
-from spleeter.separator import Separator
+import os
 
 app = Flask(__name__)
 
@@ -17,15 +17,34 @@ def upload_video():
 
 @app.route('/extract-audio', methods=['POST'])
 def extract_audio():
-    ffmpeg.input("input.mp4").output("output.wav").run()
-    return jsonify({"message": "Audio extracted!", "file": "output.wav"})
+    input_video = "input.mp4"
+    output_audio = "output.wav"
+
+    try:
+        ffmpeg.input(input_video).output(output_audio).run()
+        return jsonify({"message": "Audio extracted!", "file": output_audio})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/separate-audio', methods=['POST'])
 def separate_audio():
-    separator = Separator("spleeter:2stems")
-    separator.separate_to_file("output.wav", "output")
-    return jsonify({"message": "Audio separated!", "vocals": "output/vocals.wav", "background": "output/background.wav"})
+    input_audio = "output.wav"
+    vocals_output = "output/vocals.wav"
+    background_output = "output/background.wav"
 
+    try:
+        # Use FFmpeg's built-in vocal reduction and isolation
+        os.system(f'ffmpeg -i {input_audio} -af "highpass=f=300, lowpass=f=3000" {vocals_output}')
+        os.system(f'ffmpeg -i {input_audio} -af "pan=stereo|c0=c0+c1|c1=c0+c1, highpass=f=150, lowpass=f=4000" {background_output}')
+
+        return jsonify({
+            "message": "Audio separated!",
+            "vocals": vocals_output,
+            "background": background_output
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 @app.route('/transcribe', methods=['POST'])
 def transcribe():
     with open("output/vocals.wav", "rb") as audio_file:
