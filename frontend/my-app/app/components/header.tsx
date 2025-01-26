@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
-import { CuboidIcon as Cube } from "lucide-react"
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -18,9 +18,15 @@ export function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-md">
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center space-x-2">
-          <Cube className="h-8 w-8 text-accent" />
-          <span className="text-xl font-bold">LinguaSync</span>
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/DubItLogo.png"
+            alt="DubIT Logo"
+            width={425}
+            height={212}
+            className="w-auto h-[4.25rem]"
+            priority
+          />
         </Link>
         <ul className="flex space-x-4">
           {navItems.map((item) => (

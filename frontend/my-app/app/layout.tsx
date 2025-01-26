@@ -1,10 +1,14 @@
 import "./globals.css"
-import { Inter } from "next/font/google"
+import { Inter, Space_Grotesk } from "next/font/google"
 
 const inter = Inter({ subsets: ["latin"] })
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+})
 
 export const metadata = {
-  title: "LinguaSync - AI-Powered Video Dubbing",
+  title: "DubIt - AI-Powered Video Dubbing",
   description: "Upload your video and get it dubbed in any language instantly.",
 }
 

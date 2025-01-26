@@ -12,7 +12,7 @@ export function Business() {
         className="container mx-auto px-4"
       >
         <h2 className="text-4xl font-bold text-center mb-8">Business Solutions</h2>
-        <p className="text-xl text-center">Discover how LinguaSync can help your business reach a global audience.</p>
+        <p className="text-xl text-center">Discover how  can help your business reach a global audience.</p>
       </motion.div>
     </section>
   )
