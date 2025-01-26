@@ -7,6 +7,7 @@ import os
 import sys
 import subprocess
 from google.cloud import speech
+from google.cloud import texttospeech
 from google.cloud import translate_v2 as translate
 
 app = Flask(__name__)
@@ -101,15 +102,62 @@ def translate_text_api():
         "translatedText": translated_text
     })
 
-# TASK 3.1
+#TASK 4 Takes text and target language as parameter, translates given text to target language. Text to mp3 takes the new translated text
+# and outputs an mp3 file with the audio version 
 def translate_text(text, target_language):
     client = translate.Client()
     try:
         # Translate the text using the Google Translate API
         result = client.translate(text, target_language=target_language)
-        return result['translatedText']
+        #return result['translatedText']
+        
     except Exception as e:
         return str(e)
+#def text_to_mp3(text, output_file="output.mp3", language_code="en-US", voice_name="en-US-Wavenet-D"):
+    """
+    Converts input text into an MP3 audio file using Google Cloud Text-to-Speech API.
+
+    Args:
+        text (str): The input text to be converted.
+        output_file (str): The name of the output MP3 file.
+        language_code (str): The language code for the Text-to-Speech API (default: "en-US").
+        voice_name (str): The name of the TTS voice (default: "en-US-Wavenet-D").
+    """
+    if os.path.exists(output_file):
+        print(f"File '{output_file}' already exists. Skipping generation.")
+        return
+
+    client = texttospeech.TextToSpeechClient()
+
+    # Configure the text input
+    input_text = texttospeech.SynthesisInput(text=text)
+
+    # Select the voice
+    voice = texttospeech.VoiceSelectionParams(
+        language_code=language_code,
+        name=voice_name,
+        ssml_gender=texttospeech.SsmlVoiceGender.NEUTRAL
+    )
+
+    # Set the audio format
+    audio_config = texttospeech.AudioConfig(
+        audio_encoding=texttospeech.AudioEncoding.MP3
+    )
+
+    # Generate speech
+    response = client.synthesize_speech(input=input_text, voice=voice, audio_config=audio_config)
+
+    # Save the audio content to an MP3 file
+    with open(output_file, "wb") as out:
+        out.write(response.audio_content)
+        print(f"Audio content written to file: {output_file}")
+
+
+
+text_to_mp3("hi i'm very sleepy")
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
