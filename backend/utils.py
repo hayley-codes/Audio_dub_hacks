@@ -128,3 +128,29 @@ def text_to_mp3(text, output_file="output.mp3", language_code="en-US", voice_nam
         print(f"Audio content written to file: {output_file}")
     
     return output_file 
+
+# Helper function for Task 5: Combine video and audio
+def combine_video_audio(video_file, audio_file, output_file):
+    """
+    Combines the video file and audio file into a new video file with the dubbed audio.
+
+    Args:
+        video_file (str): Path to the input video file
+        audio_file (str): Path to the input audio file
+        output_file (str): Path where the output video file will be saved
+
+    Returns:
+        str: Path to the output video file if successful
+        dict: Error message if file not found
+        str: Error message if combination fails
+    """
+    if not os.path.exists(video_file) or not os.path.exists(audio_file):
+        return {"error": "One or both input files not found"}
+    
+    try:
+        subprocess.run([
+            "ffmpeg", "-y", "-i", video_file, "-i", audio_file, "-c:v", "copy", "-c:a", "aac", output_file
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        return output_file
+    except Exception as e:
+        return str(e)

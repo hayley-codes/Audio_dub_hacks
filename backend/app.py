@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import os
-from utils import extract_audio, transcribe_audio, translate_text, text_to_mp3
+from utils import extract_audio, transcribe_audio, translate_text, text_to_mp3, combine_video_audio
 
 app = Flask(__name__)
 
@@ -40,6 +40,11 @@ def process_video():
             output_file=output_path,
             language_code=target_language
         )
+
+        # Step 6: Combine video and audio
+        combined_output_filename = f"combined_video_{target_language}.mp4"
+        combined_output_path = os.path.join(UPLOAD_FOLDER, combined_output_filename)
+        combined_video_path = combine_video_audio(input_video, final_audio_path, combined_output_path)
         
         return jsonify({
             "success": True,
