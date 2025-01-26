@@ -4,7 +4,9 @@ import { useRef } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Header } from "./components/header"
 import { Hero } from "./components/hero"
+import { DubITInfo } from "./components/dub-it-info"
 import { FileUpload } from "./components/file-upload"
+import { IntegrationCollage } from "./components/integration-collage"
 import { Business } from "./components/business"
 import { AboutUs } from "./components/about-us"
 import { HowItWorks } from "./components/how-it-works"
@@ -31,6 +33,8 @@ export default function Home() {
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }}>
           <Hero />
         </motion.div>
+        <IntegrationCollage />
+        <DubITInfo />
         <FileUpload />
         <Business />
         <AboutUs />

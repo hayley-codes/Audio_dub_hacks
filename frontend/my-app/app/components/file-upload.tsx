@@ -36,10 +36,16 @@ export function FileUpload() {
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="container mx-auto px-4"
+        className="container mx-auto px-4 text-center"
       >
-        <h2 className="text-4xl font-bold text-center mb-8">Upload Your Video</h2>
+        <h2 className="text-4xl font-bold mb-8">Upload Your Video</h2>
         
+        {/* Demo Information */}
+        <p className="text-lg mb-4">
+          This is a demo showcasing the technology that streaming giants such as <strong>Netflix</strong> and <strong>Prime Video</strong> will use when they partner with us. 
+          Please upload a video file to see how DubIT can enhance your viewing experience!
+        </p>
+
         {/* Language Selection Dropdown */}
         <div className="mb-4">
           <label htmlFor="language" className="block text-lg mb-2">Select Language:</label>
@@ -47,7 +53,7 @@ export function FileUpload() {
             id="language"
             value={language}
             onChange={handleLanguageChange}
-            className="border rounded p-2"
+            className="border rounded p-2 bg-gray-200 text-gray-800"
           >
             <option value="es">Spanish</option>
             <option value="en">English</option>
