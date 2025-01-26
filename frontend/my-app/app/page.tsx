@@ -9,6 +9,7 @@ import { Business } from "./components/business"
 import { AboutUs } from "./components/about-us"
 import { HowItWorks } from "./components/how-it-works"
 import { BackgroundGraphic } from "./components/background-graphic"
+import { Particles } from "./components/particles"
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -24,6 +25,7 @@ export default function Home() {
   return (
     <main ref={containerRef} className="min-h-screen relative bg-transparent">
       <BackgroundGraphic />
+      <Particles />
       <div className="relative">
         <Header />
         <motion.div style={{ opacity: heroOpacity, scale: heroScale }}>
