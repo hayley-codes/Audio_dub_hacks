@@ -6,10 +6,12 @@ import ffmpeg
 import os
 import sys
 import subprocess
+from google.cloud import speech
+from google.cloud import translate_v2 as translate
 
 app = Flask(__name__)
 
-#TASK ONE: MP4 TO WAV
+#TASK 1: MP4 TO WAV
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -43,6 +45,71 @@ def extract_audio_api():
     output_audio = extract_audio(input_video)
     
     return jsonify({"message": "Audio extracted!", "file": output_audio})
+
+#TASK 2: Turns WAV audio files to a string, returns a transcript String
+def transcribe_audio(audio_path):
+    # Initialize client
+    client = speech.SpeechClient()
+
+    # Read the audio file
+    with open(audio_path, "rb") as audio_file:
+        content = audio_file.read()
+
+    # Configure audio and recognition settings
+    audio = speech.RecognitionAudio(content=content)
+    config = speech.RecognitionConfig(
+        #encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,  # Update this if using a different format
+        #sample_rate_hertz=64000,  # Update based on your audio file's sample rate
+        language_code="en-US",    # Replace with your desired language code
+        audio_channel_count=2,
+    )
+
+    # Perform the transcription
+    response = client.recognize(config=config, audio=audio)
+
+    transcript_string=""
+
+    # Process and print results
+    for result in response.results:
+        transcript_string+=(result.alternatives[0].transcript)
+
+    return transcript_string
+audio_path="test_video.wav"
+
+
+# TASK 3 Takes the text & sends a JSON request for target language, uses target language to translate 
+@app.route('/translate', methods=['POST'])
+def translate_text_api():
+    # Get the incoming JSON request from the frontend
+    data = request.get_json()
+
+    # Check if 'target_language' is in the request
+    if 'target_language' not in data:
+        return jsonify({"error": "Missing 'target_language' in the request"}), 400
+    
+    # Get the target language from the request
+    target_language = data['target_language']
+
+    # Call the transcribe_audio function (the text is obtained here)
+    text = transcribe_audio("path/to/audio/file")  # Assuming the audio file is passed here
+
+    # Now, call the translation function
+    translated_text = translate_text(text, target_language)
+
+    return jsonify({
+        "originalText": text,
+        "translatedText": translated_text
+    })
+
+# TASK 3.1
+def translate_text(text, target_language):
+    client = translate.Client()
+    try:
+        # Translate the text using the Google Translate API
+        result = client.translate(text, target_language=target_language)
+        return result['translatedText']
+    except Exception as e:
+        return str(e)
 
 if __name__ == '__main__':
     app.run(debug=True)
