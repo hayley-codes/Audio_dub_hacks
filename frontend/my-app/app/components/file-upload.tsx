@@ -7,10 +7,20 @@ import { Upload } from "lucide-react"
 
 export function FileUpload() {
   const [file, setFile] = useState<File | null>(null)
+  const [language, setLanguage] = useState<string>('es') // Default language
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFile(acceptedFiles[0])
   }, [])
+
+  const handleLanguageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setLanguage(event.target.value)
+  }
+
+  const handleSubmit = () => {
+    // Logic to handle file upload along with the selected language
+    // ...
+  }
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -29,6 +39,29 @@ export function FileUpload() {
         className="container mx-auto px-4"
       >
         <h2 className="text-4xl font-bold text-center mb-8">Upload Your Video</h2>
+        
+        {/* Language Selection Dropdown */}
+        <div className="mb-4">
+          <label htmlFor="language" className="block text-lg mb-2">Select Language:</label>
+          <select
+            id="language"
+            value={language}
+            onChange={handleLanguageChange}
+            className="border rounded p-2"
+          >
+            <option value="es">Spanish</option>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            {/* Add more languages as needed */}
+          </select>
+        </div>
+
         <div
           {...getRootProps()}
           className={`border-2 border-dashed rounded-lg p-12 text-center cursor-pointer transition-colors ${
