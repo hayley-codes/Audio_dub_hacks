@@ -1,6 +1,11 @@
 from flask import Flask, request, jsonify
 import os
 from utils import extract_audio, transcribe_audio, translate_text, text_to_mp3
+import os
+import subprocess
+from google.cloud import speech
+from google.cloud import texttospeech
+from google.cloud import translate_v2 as translate
 
 app = Flask(__name__)
 
